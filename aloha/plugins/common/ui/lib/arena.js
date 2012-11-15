@@ -1,0 +1,1 @@
+define(["jquery","ui/component"],function(e,t){var n=t.extend({init:function(){this.element=e("<div>")},adopt:function(e){this.element.append(e.element)}});return n})

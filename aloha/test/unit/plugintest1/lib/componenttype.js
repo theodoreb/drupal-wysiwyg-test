@@ -1,0 +1,1 @@
+define([],function(){var e=Class.extend({doSome:function(){return"didSome"}});return e})

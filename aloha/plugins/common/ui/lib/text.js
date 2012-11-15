@@ -1,0 +1,1 @@
+define(["jquery","ui/component"],function(e,t){var n=t.extend({init:function(){this._super(),this.element=e("<input>").bind("change",e.proxy(function(e){this.setValue(e.target.value)},this))},setValue:function(e){}});return n})

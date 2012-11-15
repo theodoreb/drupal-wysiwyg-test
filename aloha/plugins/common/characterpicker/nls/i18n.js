@@ -1,0 +1,1 @@
+define({root:{"button.addcharacter.tooltip":"pick special characters"},ca:!0,de:!0,mk:!0,"pt-br":!0,ru:!0,uk:!0,"zh-hans":!0})

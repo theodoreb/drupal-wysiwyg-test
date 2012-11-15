@@ -1,0 +1,1 @@
+define(["jquery"],function(e){e.fn.alohaTest=function(){return"ok"}})

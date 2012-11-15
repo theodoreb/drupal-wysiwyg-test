@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<title>CKEditor</title>
+	<link rel="stylesheet" href="normalize.css" type="text/css">
+	<style>body {font-family: sans-serif;} #edit {width: 80%; max-width: 40em; margin: auto;}</style>
+
+	<script src="ckeditor/ckeditor.js"></script>
+
+</head>
+<body>
+
+<div id="edit" class="node-content" contenteditable="true">
+  <h2>Summary</h2>
+  <p>After many intense discussions on the concept model, we have a working prototype as a deliverable and would like to get your feedback on our progress. The current version of the prototype takes the technical as well as the UX challenges of building this for Drupal core.</p>
+  <p>This post gives background to how we got to the prototype, outlines some of the major concerns and gives a detailed description on the process we followed. With feature freeze coming quickly it’s likely we need to move faster on the remaining tasks outlined at the end of this post.</p>
+  <ul>
+    <li>From the discussions in the concept model, we concluded that the community is largely concerned about:</li>
+    <li>How we can make it simple for Edith (content creator) to customize layouts and add blocks, and how to avoid confronting her with too many technical details (contexts/data sources).</li>
+    <li>How users can effectively browse blocks relevant in their given context/data source, and how users can explore all the blocks.</li>
+    <li>Finally, how we manage all of the other tasks around layout, block inheritance, page variations, relationships, conditions. </li>
+  </ul>
+  <p>We didn’t solve all of these questions, but we were able to explore and find solutions to our core problem, which is how to make the interaction where more dynamic interactions are required (e.g configuring content/article/%) usable.</p>
+  <h3>Current prototype</h3>
+  <h3>
+    <a href="http://bojhan.nl/drupal/prototype4/index.html">Latest prototype</a>
+  </h3>
+  <p>Although this is a rough prototype, your feedback is essential in helping us move towards a complete solution. You can try out the prototype yourself, but also watch a video that explains the functionality:</p>
+  <h3>
+    <a href="https://vimeo.com/45358029">Video</a>
+  </h3>
+  <p>The prototype focuses on solving one problem, that of browsing all the blocks vs. only the relevant ones for your available data sources. We will need feedback on this, but also how we should handle usecases like:</p>
+  <ul>
+    <li>How will this system handle page variations? What if I want different blocks shown on the Dutch vs. English versions of the page.</li>
+    <li>Can you inherit block configuration? When you are placing a block many times (footer), how does this work?</li>
+  </ul>
+  <p>Moving forward we wish to get verification that we are on the right track but also discuss how we can solve these two challenges.</p>
+  <h2>Details on our process</h2>
+  <h3>Brainstorming sessions</h3>
+  <p>We reviewed and discussed all the ideas posted in concept model over the past two months during a number of brainstorm sessions between myself, EclipseGc, jenlampton, merlinofchaos, webchick, aspilicious, Itanglo, UserAdvocate, tkoleary and many more.</p>
+  <p>The initial feedback indicated that the context/datasource step was too difficult to grasp.  We agreed, and decided to try and solve this. batsonjay and jenlampton provided use-cases that led us to start exploring how to browse blocks, and edward_or really honed in on how this could look.</p>
+  <p>
+    <img src="http://groups.drupal.org/files/blockbrowsing.png" alt="blockbrowsing.png" width="100%">
+    <br>
+    <em>Picture 1: Iteration on blocks browsing by edward_or</em>
+  </p>
+  <p>The idea was to solve much of the data source confusion by making data sources more tangible, allowing people to browse by the available blocks and thereby creating a direct relationship between the blocks and their required data source.</p>
+  <p>However, we still needed to solve the following problems:</p>
+  <p>
+    Understanding data sources is a very tough requirement for simple tasks like making a landing page. In this case the data sources part should be transparent.
+    <br>
+    
+Users should also be able to browse all blocks (even if a data source is not available.) Therefore, data source configuration needs to be possible on the block itself.
+  </p>
+  <p>Data sources should be close to browsing blocks in the UI, which will help users understand the connection between the two.</p>
+  <p>These conclusions were real breakthroughs in our thought process. We had been stuck for weeks on the ability to browse all blocks vs. only browsing per available data sources. Ultimately, e decided that we should allow both.</p>
+  <p>A number of iterations followed, leading to EclipseGc’s video and the mockup below. This concept basically allows people to browse by (a) all the blocks, (b) only the available data sources, and (c) custom data sources that could become available.</p>
+  <p>
+    <img src="http://groups.drupal.org/files/EclipseGc-bringing-them-close.png" alt="EclipseGc-bringing-them-close.png" width="100%">
+    <br>
+    <em>
+      Picture 2: Browsing per data source, by EclipseGc
+      <br>
+    </em>
+    <br>
+    
+After a thorough discussion we figured out that this is simply too much -- there would three
+    <br>
+    
+different places where a user could go to find a “Node Body”.
+  </p>
+  <p>At this point, we also figured out several other points:</p>
+  <ul>
+    <li>The URL is the primary data source and needs to be defined before creating a page. Otherwise, you could end up creating URLs that simply don’t work (by piling up different data sources in the URL). </li>
+    <li>If a block requires a data source, and there is already a data source of that type available by default, that datasource is chosen automatically. </li>
+    <li>We need to group the blocks in categories. Browsing by data source alone isn’t realistic; it’s potentially unusable and doesn’t support blocks that require several data sources. </li>
+    <li>Most Drupal core pages (if not all)  should be converted to this system to provide examples for content creators. </li>
+  </ul>
+  <p>Following this, we looked at the explorations done by Itangalo, which went in a very different direction. One of the interesting things that Itangalo showed is showing the relationship between data sources and the blocks on the page. Itangalo also introduced a more direct way to change the configuration of a given block. We adopted a number of Itangalo’s proposed interaction, but left out the direct linking of data sources with their blocks, which we felt could become far too complex for our content creators.</p>
+  <p>
+    <img src="http://groups.drupal.org/files/layouter 2 (edited)_0.png" alt="layouter 2 (edited).png" width="100%">
+    <br>
+    <em>Picture 3: Showing data source connections inline, by Itanglo</em>
+  </p>
+  <p>
+    A comprehensive 
+    <a href="">document</a>
+     is available for detailed information. (Thank you useradvocate!) The document outlines some of the fundamentals issues we faced while designing the interface.
+  </p>
+  <h3>Building prototypes</h3>
+  <p>After our brainstorms, we concluded that we needed to take this one step further and create prototypes. Because this is such a complex topic, it’s really hard to visualize what everyone means in this discussion and how each part of what we do influences the flow.</p>
+  <p>We went through several prototypes (see below). The prototypes were built in Axure RP, which allows us to make the prototypes interactive. I apologize if these aren't very accessible. Keep in mind that these are still very rough prototypes and by no means complete.</p>
+  <p>
+    <strong>Prototype 1a </strong>
+    - 
+    <a href="http://bojhan.nl/drupal/prototype1a/index.html" title="http://bojhan.nl/drupal/prototype1a/index.html">http://bojhan.nl/drupal/prototype1a/index.html</a>
+    <br>
+    
+This prototype follows the flow where you can browse all the blocks available and configure the data sources.
+  </p>
+  <p>
+    <strong>Prototype 1b </strong>
+    - 
+    <a href="http://bojhan.nl/drupal/prototype1b/index.html" title="http://bojhan.nl/drupal/prototype1b/index.html">http://bojhan.nl/drupal/prototype1b/index.html</a>
+    <br>
+    
+This prototype follows the flow where you can first add a page, then add the node context and then add a node body.
+  </p>
+  <p>
+    <strong>Prototype 2 </strong>
+    - 
+    <a href="http://bojhan.nl/drupal/prototype2/index.html" title="http://bojhan.nl/drupal/prototype2/index.html">http://bojhan.nl/drupal/prototype2/index.html</a>
+    <br>
+    
+This prototype builds on more knowledge where prototypes 1a and 1b fell short. You can create a page, add a datasource through the URL and then browse all the blocks. This prototype takes into consideration conditions and relationships, and provides more usable browsing when there are many blocks.
+  </p>
+  <p>
+    <strong>Prototype 3 (latest prototype) </strong>
+    - 
+    <a href="http://bojhan.nl/drupal/prototype4/index.html" title="http://bojhan.nl/drupal/prototype4/index.html">http://bojhan.nl/drupal/prototype4/index.html</a>
+    <br>
+    
+This prototype builds on a lot of discussion that followed prototype 2. It takes into consideration block placement, toggling between relevant blocks and all blocks, and data source configuration; and also makes the prototype more interactive.
+  </p>
+  <h3>Conclusions</h3>
+  <p>We are not yet finished, but we are well on the road to being so. We came to the conclusion that in order to make this truly usable for both end-users as site builders, we need to allow browsing all blocks and provide a clear relationship between the data sources and the placeable blocks.</p>
+  <p>We tried to keep notes of all of the discussions we had on IRC and in Skype, but occasionally we failed to report back from these discussions in the original concept model thread. I hope this post will clear up what the progress has been, and help us move forward in discussing all of the details we haven’t covered yet.</p>
+  <p>We unfortunately have only have a few months left, and we haven't even reached the implementation stage. Our strategy for now is to continue discussion, and move towards implementing the parts on which we have reached consensus. We really need to get things in, since it is simply too big to solve all at once.</p>
+  <p>The topics we want to explore further are:</p>
+  <ol>
+    <li>How will this system handle page variations? (e.g. different blocks shown on the Dutch vs. English versions of the page).</li>
+    <li>Can you inherit block configuration? When you are placing a block many times (footer), how does this work?</li>
+    <li>Can you make groups of certain blocks? (e.g. a “header group” for your sitename, top navigation, search box etc.)</li>
+    <li>How do you create a custom layout for your landing page or even your mobile site?</li>
+  </ol>
+  <p>
+    <strong>What do you guys think of this? Are we moving in the right direction?</strong>
+  </p>
+  <table class="sticky-header" style="top: 0px; width: 606px; left: 323px; position: fixed; visibility: hidden;">
+    <thead>
+      <tr>
+        <th style="width: 516px;">Attachment</th>
+        <th style="width: 66px;">Size</th>
+      </tr>
+    </thead>
+  </table>
+  <table id="attachments" class="sticky-enabled sticky-table" style="">
+    <thead class="tableHeader-processed">
+      <tr>
+        <th>Attachment</th>
+        <th>Size</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="odd">
+        <td>
+          <a href="http://groups.drupal.org/files/Drupal 8 Page Building - A Strategy for an Outside-In User Interface System.pdf">Drupal 8 Page Building - A Strategy for an Outside-In User Interface System.pdf</a>
+        </td>
+        <td>2.9 MB</td>
+      </tr>
+      <tr class="even">
+        <td>
+          <a href="http://groups.drupal.org/files/blockbrowsing.png">blockbrowsing.png</a>
+        </td>
+        <td>48.32 KB</td>
+      </tr>
+      <tr class="odd">
+        <td>
+          <a href="http://groups.drupal.org/files/EclipseGc-bringing-them-close.png">EclipseGc-bringing-them-close.png</a>
+        </td>
+        <td>118.77 KB</td>
+      </tr>
+      <tr class="even">
+        <td>
+          <a href="http://groups.drupal.org/files/layouter 3_0.png">layouter 3.png</a>
+        </td>
+        <td>31.64 KB</td>
+      </tr>
+      <tr class="odd">
+        <td>
+          <a href="http://groups.drupal.org/files/layouter 2 (edited)_0.png">layouter 2 (edited).png</a>
+        </td>
+        <td>69.47 KB</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+//  CKEDITOR.disableAutoInline = true;       
+  
+  
+  
+    // This code is generally not necessary, but it is here to demonstrate
+		// how to customize specific editor instances on the fly. This fits well
+		// this demo because we have editable elements (like headers) that
+		// require less features.
+
+		// The "instanceCreated" event is fired for every editor instance created.
+		CKEDITOR.on( 'instanceCreated', function( event ) {
+			var editor = event.editor,
+				element = editor.element;
+				// which is fired after the configuration file loading and
+				// execution. This makes it possible to change the
+				// configurations before the editor initialization takes place.
+				editor.on( 'configLoaded', function() {
+
+					editor.config.toolbar = [
+		        { name: 'basicstyles', items : [ 'Bold','Italic','Strike','-','RemoveFormat' ] },
+		        { name: 'links', items : [ 'Link','Unlink','Anchor' ] }, 
+		        { name: 'paragraph', items : [ 'NumberedList','BulletedList','-','Outdent','Indent' ] },
+		        { name: 'styles', items : [ 'Format' ] },    
+		        { name: 'insert', items : [ 'Image','Table' ] }
+	        ];
+					
+				});
+
+		});
+	
+  //var editor = CKEDITOR.inline( document.getElementById( 'edit' ) );
+</script>
+</body>
+</html>

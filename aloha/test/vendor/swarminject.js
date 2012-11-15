@@ -1,0 +1,1 @@
+(function(){var e=window.location.search;e=decodeURIComponent(e.slice(e.indexOf("swarmURL=")+9));if(!e||e.indexOf("http")!==0)return;document.write("<script src='http://testswarm.aloha-editor.org/js/inject.js?"+(new Date).getTime()+"'></scr"+"ipt>")})()

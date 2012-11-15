@@ -1,0 +1,32 @@
+/* apply-markup.js is part of Aloha Editor project http://aloha-editor.org
+ *
+ * Aloha Editor is a WYSIWYG HTML5 inline editing library and editor. 
+ * Copyright (c) 2010-2012 Gentics Software GmbH, Vienna, Austria.
+ * Contributors http://aloha-editor.org/contribution.php 
+ * 
+ * Aloha Editor is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or any later version.
+ *
+ * Aloha Editor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * 
+ * As an additional permission to the GNU GPL version 2, you may distribute
+ * non-source (e.g., minimized or compacted) forms of the Aloha-Editor
+ * source code without the copy of the GNU GPL normally required,
+ * provided you include this license notice and a URL through which
+ * recipients can access the Corresponding Source.
+ */
+
+define(["testutils"],function(e){function t(t,n,r,i,s,o,u,a,f){var l=e.generateRange(n,r,i,s);e.applyMarkup(t,l,o,f);var c=Aloha.editables[0].getContents(!0),h=Aloha.jQuery(a).contents();deepEqual(c.extractHTML(),h.extractHTML(),"Check Operation Result")}function n(t,n,r,i,s,o,u,a){var f=e.generateRange(n,r,i,s);Aloha.Selection.changeMarkupOnSelection(o);var l=Aloha.editables[0].getContents(!0),c=Aloha.jQuery(a).contents();deepEqual(l.extractHTML(),c.extractHTML(),"Check Operation Result")}Aloha.ready(function(){module("Plaintext Markup Handling",{setup:function(){this.edit=Aloha.jQuery("#edit"),this.ref=Aloha.jQuery("#ref-plaintext"),this.edit.html(this.ref.html()),this.edit.aloha()},teardown:function(){this.edit.mahalo()}}),test("Bold at beginning",function(){t(this.edit,this.edit.contents().get(0),0,this.edit.contents().get(0),4,jQuery("<b></b>"),"#ref-plaintext","#ref-plaintext-start-bold")}),test("Bold in the middle",function(){t(this.edit,this.edit.contents().get(0),5,this.edit.contents
+().get(0),13,jQuery("<b></b>"),"#ref-plaintext","#ref-plaintext-middle-bold")}),test("Bold at end",function(){t(this.edit,this.edit.contents().get(0),14,this.edit.contents().get(0),18,jQuery("<b></b>"),"#ref-plaintext","#ref-plaintext-end-bold")}),module("Cross Markup Handling",{setup:function(){this.edit=Aloha.jQuery("#edit"),this.ref=Aloha.jQuery("#ref-crossmarkup"),this.edit.html(this.ref.html()),this.edit.aloha()},teardown:function(){this.edit.mahalo()}}),test("Bold into Italic start",function(){t(this.edit,this.edit.contents().get(0),0,this.edit.find("i").contents().get(0),4,jQuery("<b></b>"),"#ref-crossmarkup","#ref-crossmarkup-start-bold")}),test("Bold in Italic",function(){t(this.edit,this.edit.find("i").contents().get(0),1,this.edit.find("i").contents().get(0),5,jQuery("<b></b>"),"#ref-crossmarkup","#ref-crossmarkup-inner-bold")}),test("Bold around Italic",function(){t(this.edit,this.edit.contents().get(0),5,this.edit.contents().get(2),3,jQuery("<b></b>"),"#ref-crossmarkup","#ref-crossmarkup-outer-bold"
+)}),test("Bold out of Italic end",function(){t(this.edit,this.edit.find("i").contents().get(0),4,this.edit.contents().get(2),3,jQuery("<b></b>"),"#ref-crossmarkup","#ref-crossmarkup-end-bold")}),test("Italic into Italic start",function(){t(this.edit,this.edit.contents().get(0),0,this.edit.find("i").contents().get(0),4,jQuery("<i></i>"),"#ref-crossmarkup","#ref-crossmarkup-start-italic")}),test("Italic into Italic start with nesting",function(){t(this.edit,this.edit.contents().get(0),0,this.edit.find("i").contents().get(0),4,jQuery("<i></i>"),"#ref-crossmarkup","#ref-crossmarkup-start-italic-nesting",!0)}),test("Italic in Italic",function(){t(this.edit,this.edit.find("i").contents().get(0),1,this.edit.find("i").contents().get(0),5,jQuery("<i></i>"),"#ref-crossmarkup","#ref-crossmarkup-inner-italic")}),test("Italic in Italic with nesting",function(){t(this.edit,this.edit.find("i").contents().get(0),1,this.edit.find("i").contents().get(0),5,jQuery("<i></i>"),"#ref-crossmarkup","#ref-crossmarkup-inner-italic-nesting"
+,!0)}),test("Italic around Italic",function(){t(this.edit,this.edit.contents().get(0),5,this.edit.contents().get(2),3,jQuery("<i></i>"),"#ref-crossmarkup","#ref-crossmarkup-outer-italic")}),test("Italic around Italic with nesting",function(){t(this.edit,this.edit.contents().get(0),5,this.edit.contents().get(2),3,jQuery("<i></i>"),"#ref-crossmarkup","#ref-crossmarkup-outer-italic-nesting",!0)}),test("Italic out of Italic end",function(){t(this.edit,this.edit.find("i").contents().get(0),4,this.edit.contents().get(2),3,jQuery("<i></i>"),"#ref-crossmarkup","#ref-crossmarkup-end-italic")}),test("Italic out of Italic end with nesting",function(){t(this.edit,this.edit.find("i").contents().get(0),4,this.edit.contents().get(2),3,jQuery("<i></i>"),"#ref-crossmarkup","#ref-crossmarkup-end-italic-nesting",!0)}),module("Header Handling",{setup:function(){this.edit=Aloha.jQuery("#edit"),this.ref=Aloha.jQuery("#ref-header"),this.edit.html(this.ref.html()),this.edit.aloha()},teardown:function(){this.edit
+.mahalo()}}),test("Paragraph in first Header",function(){n(this.edit,this.edit.find("h1").contents().get(0),1,this.edit.find("h1").contents().get(0),1,jQuery("<p></p>"),"#ref-header","#ref-header-first-p")}),test("Header in first Header",function(){n(this.edit,this.edit.find("h1").contents().get(0),1,this.edit.find("h1").contents().get(0),1,jQuery("<h2></h2>"),"#ref-header","#ref-header-first-h2")}),test("Header in first Paragraph",function(){n(this.edit,this.edit.find("p").eq(0).contents().get(0),1,this.edit.find("p").eq(0).contents().get(0),1,jQuery("<h1></h1>"),"#ref-header","#ref-header-second-h1")}),test("Header in second Paragraph",function(){n(this.edit,this.edit.find("p").eq(1).contents().get(0),1,this.edit.find("p").eq(1).contents().get(0),1,jQuery("<h1></h1>"),"#ref-header","#ref-header-last-h1")})})})

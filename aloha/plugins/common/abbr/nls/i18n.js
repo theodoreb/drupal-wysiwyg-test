@@ -1,0 +1,1 @@
+define({root:{"floatingmenu.tab.abbr":"Abbreviation","button.addabbr.tooltip":"insert abbreviation","button.abbr.tooltip":"format as abbreviation","newabbr.defaulttext":"Abbr"},ca:!0,de:!0,mk:!0,"pt-br":!0,ru:!0,uk:!0,"zh-hans":!0})

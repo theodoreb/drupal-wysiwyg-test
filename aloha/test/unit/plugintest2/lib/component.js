@@ -1,0 +1,1 @@
+define(["plugintest1/componenttype"],function(e){var t=e.extend({doOther:function(){return"didOther"}});return new t})
